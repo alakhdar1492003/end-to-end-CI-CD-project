@@ -18,7 +18,7 @@ pipeline {
 
         stage('checkout from git') {
             steps {
-                git branch: 'master' url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git'
+                git branch: 'master', url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git'
             }
         }
 
