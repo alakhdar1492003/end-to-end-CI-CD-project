@@ -18,7 +18,7 @@ pipeline {
 
         stage('checkout from git') {
             steps {
-                git branch: 'master', url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git' 
+                git branch: 'master', url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git' ,  credentialId: 'github-token'
             }
         }
 
@@ -54,5 +54,23 @@ pipeline {
                 sh 'trivy fs . > trivyfs.txt'
             }
         }
+
+        stage('docker build&push') {
+            steps {
+                withDockerRegistry(credentialId: 'dockerhub-token' , toolName: 'docker') {
+                    sh 'docker build -t java-image .'
+                    sh 'docker tag java-image mohamedahmedalakhdar/java-image:latest'
+                    sh 'docker push mohamedahmedalakhdar/java-image:latest'
+                }
+            }
+        }    
+        stage('trivy'){
+            steps {
+                sh 'trivy image mohamedahmedalakhdar/java-image:latest > trivyimage.txt'
+            }
+        }    
+
+        
+
     }
 }
