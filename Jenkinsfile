@@ -57,7 +57,7 @@ pipeline {
 
         stage('docker build&push') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub-token' , toolName: 'docker') {
+                withDockerRegistry(credentialsId: 'dockerhub-token') {
                     sh 'docker build -t java-image .'
                     sh 'docker tag java-image mohamedahmedalakhdar/java-image:latest'
                     sh 'docker push mohamedahmedalakhdar/java-image:latest'
