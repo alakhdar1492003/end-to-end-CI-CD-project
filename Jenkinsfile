@@ -18,7 +18,7 @@ pipeline {
 
         stage('checkout from git') {
             steps {
-                git branch: 'master', url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git' ,  credentialId: 'github-token'
+                git branch: 'master', url: 'https://github.com/alakhdar1492003/end-to-end-CI-CD-project.git' ,  credentialsId: 'github-token'
             }
         }
 
@@ -38,7 +38,7 @@ pipeline {
         stage('quality gate') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialId: 'sonarqube-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
                 }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
 
         stage('docker build&push') {
             steps {
-                withDockerRegistry(credentialId: 'dockerhub-token' , toolName: 'docker') {
+                withDockerRegistry(credentialsId: 'dockerhub-token' , toolName: 'docker') {
                     sh 'docker build -t java-image .'
                     sh 'docker tag java-image mohamedahmedalakhdar/java-image:latest'
                     sh 'docker push mohamedahmedalakhdar/java-image:latest'
